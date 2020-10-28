@@ -1,0 +1,27 @@
+version: '3'
+services:
+  app:
+    image: metabase/metabase:v0.37.0.2
+    container_name: metabase
+    ports:
+      - 3000:3000
+    volumes:
+      - ./metabase/data:/mnt/data
+
+  sample_db:
+    build: ./db
+    container_name: sample_db
+    ports:
+      - 33006:3306
+    volumes:
+      - mysql-sample-app-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: sample
+      MYSQL_APP_USER: sample
+      MYSQL_APP_USER_PASSWORD: sample
+      MYSQL_DATABASE: metabase_sample
+    restart: unless-stopped
+
+volumes:
+  mysql-sample-app-data:
+    driver: local
